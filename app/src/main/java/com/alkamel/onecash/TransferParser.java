@@ -2,7 +2,7 @@ package com.alkamel.onecash;
 
 import java.text.Normalizer;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.regex.Pattern;\nimport java.math.BigDecimal;
 
 public final class TransferParser {
     private static final Pattern AMOUNT = Pattern.compile("استلمت\\s*([0-9٠-٩۰-۹]+(?:[.,][0-9٠-٩۰-۹]+)?)");
@@ -20,7 +20,7 @@ public final class TransferParser {
             if (value <= 0) return null;
             String payer = normalizeName(nm.group(1));
             if (payer.isEmpty()) return null;
-            return new Parsed((int)Math.round(value), payer);
+            return new Parsed(amount, payer);
         } catch (Exception ignored) { return null; }
     }
 
