@@ -23,23 +23,37 @@ public class MainActivity extends Activity {
     LinearLayout col(){LinearLayout l=new LinearLayout(this);l.setOrientation(1);return l;}
     View card(){LinearLayout l=col();l.setBackgroundColor(white);l.setPadding(8,8,8,8);return l;}
     void addCard(View v){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.setMargins(0,0,0,12);body.addView(v,p);} void addListCard(LinearLayout list,View v){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.setMargins(0,0,0,12);list.addView(v,p);}
+    android.graphics.drawable.GradientDrawable shape(int color,int radius,int stroke){android.graphics.drawable.GradientDrawable g=new android.graphics.drawable.GradientDrawable();g.setColor(color);g.setCornerRadius(radius);if(stroke!=0)g.setStroke(1,stroke);return g;}
+    TextView label(String s,int size,int color,boolean bold){TextView t=txt(s,size,color);if(bold)t.setTypeface(null,Typeface.BOLD);return t;}
+    Button homeButton(String s,Runnable r,int color){Button b=btn(s,r);b.setTextSize(13);b.setMinHeight(46);b.setPadding(8,4,8,4);b.setBackground(shape(color,16,0));b.setTextColor(color==navy?white:navy);return b;}
     void base(String screen){root=col();root.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);root.setBackgroundColor(bg);root.setPadding(12,8,12,8);
-        LinearLayout header=col();header.setBackgroundColor(navy);header.setPadding(14,14,14,14);
-        TextView brand=txt("الكامل",25,white);brand.setTypeface(null,Typeface.BOLD);header.addView(brand);
-        header.addView(txt("أتمتة ون كاش  •  "+screen,14,0xffc9e7ff));root.addView(header);
+        LinearLayout header=col();header.setBackground(shape(navy,18,0));header.setPadding(14,8,14,8);
+        TextView brand=txt("الكامل  •  "+screen,20,white);brand.setTypeface(null,Typeface.BOLD);header.addView(brand);
+        header.addView(txt("أتمتة ون كاش",12,0xffc9e7ff));root.addView(header);
         ScrollView sc=new ScrollView(this);body=col();body.setPadding(4,14,4,16);sc.addView(body);root.addView(sc,new LinearLayout.LayoutParams(-1,0,1));
         nav=row();nav.setBackgroundColor(white);nav.setGravity(Gravity.CENTER);String[][] n={{"الرئيسية","home"},{"العملاء","customers"},{"المخزون","inventory"},{"الحوالات","transfers"},{"التقارير","reports"},{"الإعدادات","settings"}};
-        for(String[] x:n){Button b=new Button(this);b.setText(x[0]);b.setTextSize(11);b.setAllCaps(false);b.setPadding(2,4,2,4);b.setMinWidth(0);b.setTextColor(blue);b.setOnClickListener(v->{switch(x[1]){case"home":showHome();break;case"customers":showCustomers();break;case"inventory":showInventory();break;case"transfers":showTransfers();break;case"reports":showReports();break;case"settings":showSettings();}});nav.addView(b,new LinearLayout.LayoutParams(0,-2,1));}
+        for(String[] x:n){Button b=new Button(this);b.setText(x[0]);b.setTextSize(10);b.setAllCaps(false);b.setPadding(0,2,0,2);b.setMinWidth(0);b.setMinHeight(42);b.setTextColor(blue);b.setBackgroundColor(0x00000000);b.setOnClickListener(v->{switch(x[1]){case"home":showHome();break;case"customers":showCustomers();break;case"inventory":showInventory();break;case"transfers":showTransfers();break;case"reports":showReports();break;case"settings":showSettings();}});nav.addView(b,new LinearLayout.LayoutParams(0,-2,1));}
         root.addView(nav);setContentView(root);
     }
     View stat(String label,String value,int color,String icon){LinearLayout c=col();c.setBackgroundColor(white);c.setPadding(14,12,14,12);TextView v=txt(icon+"  "+value,23,color);v.setTypeface(null,Typeface.BOLD);c.addView(v);c.addView(txt(label,13,0xff607489));return c;}
     void showHome(){base("الرئيسية");
-        LinearLayout hero=col();hero.setBackgroundColor(navy);hero.setPadding(18,18,18,18);hero.addView(txt("لوحة التحكم",22,white));hero.addView(txt("متابعة الحوالات والمخزون والإرسال",14,0xffd5e8f8));addCard(hero);
-        LinearLayout stats=row();stats.addView(stat("إجمالي الحوالات",String.valueOf(db.countTransfers()),blue,"↗"),new LinearLayout.LayoutParams(0,-2,1));stats.addView(stat("تم الإرسال",String.valueOf(db.sentCount()),green,"✓"),new LinearLayout.LayoutParams(0,-2,1));addCard(stats);
-        LinearLayout pending=col();pending.setBackgroundColor(white);pending.addView(txt("تحتاج متابعة",17,navy));TextView count=txt(String.valueOf(db.reviewCount())+" حوالة",24,orange);count.setTypeface(null,Typeface.BOLD);pending.addView(count);pending.addView(btn("فتح سجل الحوالات",()->showTransfers()));addCard(pending);
-        LinearLayout stock=col();stock.setBackgroundColor(white);stock.addView(title("المخزون المتاح"));for(int d:new int[]{100,200,250,500}){LinearLayout rr=row();rr.addView(txt(d+" ريال",15,navy),new LinearLayout.LayoutParams(0,-2,1));TextView q=txt(db.available(d)+" كرت",16,blue);q.setTypeface(null,Typeface.BOLD);rr.addView(q);stock.addView(rr);}stock.addView(btn("إدارة واستيراد المخزون",()->showInventory()));addCard(stock);
-        LinearLayout quick=col();quick.setBackgroundColor(white);quick.addView(title("اختصارات"));quick.addView(btn("＋ تسجيل عميل",()->showCustomers()));quick.addView(btn("⇧ استيراد كروت TXT",()->showInventory()));quick.addView(btn("⚙ إعدادات ون كاش",()->showSettings()));addCard(quick);
-        TextView status=txt("الإرسال الآلي: "+(db.setting("auto_send").equals("1")?"مفعّل":"متوقف"),15,db.setting("auto_send").equals("1")?red:green);status.setTypeface(null,Typeface.BOLD);addCard(status);
+        LinearLayout welcome=col();welcome.setBackground(shape(0xffeaf2f8,18,0));welcome.setPadding(14,10,14,10);
+        welcome.addView(label("مرحبًا بك",19,navy,true));welcome.addView(txt("متابعة الحوالات والمخزون من مكان واحد",13,0xff607489));addCard(welcome);
+        LinearLayout stats=row();stats.setGravity(Gravity.CENTER);stats.setPadding(0,0,0,0);
+        stats.addView(stat("كل الحوالات",String.valueOf(db.countTransfers()),orange,"↗"),new LinearLayout.LayoutParams(0,-2,1));
+        stats.addView(stat("تم الإرسال",String.valueOf(db.sentCount()),green,"✓"),new LinearLayout.LayoutParams(0,-2,1));addCard(stats);
+        LinearLayout pending=col();pending.setBackground(shape(0xfffff5e6,16,0));pending.setPadding(12,10,12,10);
+        pending.addView(label("حوالات تحتاج متابعة",15,navy,true));
+        TextView count=label(String.valueOf(db.reviewCount())+" حوالة",24,orange,true);pending.addView(count);
+        Button pendingBtn=homeButton("فتح سجل الحوالات",()->showTransfers(),0xffffe3bd);pending.addView(pendingBtn);addCard(pending);
+        LinearLayout stock=col();stock.setBackground(shape(white,18,0xffe6ebef));stock.setPadding(12,10,12,10);stock.addView(label("المخزون المتاح",18,navy,true));
+        int[] colors={0xffeaf2ff,0xfff2eaff,0xffe7f7ef,0xffe4f7fb};int idx=0;
+        for(int d:new int[]{100,200,250,500}){LinearLayout rr=row();rr.setBackground(shape(colors[idx++],12,0));rr.setPadding(6,2,6,2);TextView den=label(d+" ريال",15,navy,true);rr.addView(den,new LinearLayout.LayoutParams(0,-2,1));TextView q=label(db.available(d)+" كرت",16,orange,true);rr.addView(q);LinearLayout.LayoutParams rp=new LinearLayout.LayoutParams(-1,-2);rp.setMargins(0,5,0,5);stock.addView(rr,rp);}
+        stock.addView(homeButton("إدارة واستيراد المخزون",()->showInventory(),0xffe8edf2));addCard(stock);
+        LinearLayout quick=col();quick.setBackground(shape(white,18,0xffe6ebef));quick.setPadding(12,10,12,10);quick.addView(label("اختصارات سريعة",18,navy,true));
+        LinearLayout q1=row();q1.addView(homeButton("＋ تسجيل عميل",()->showCustomers(),0xffeaf2ff),new LinearLayout.LayoutParams(0,48,1));q1.addView(homeButton("⇧ استيراد TXT",()->showInventory(),0xfffff0df),new LinearLayout.LayoutParams(0,48,1));quick.addView(q1);
+        LinearLayout q2=row();q2.addView(homeButton("⚙ إعدادات ون كاش",()->showSettings(),0xffeaf2ff),new LinearLayout.LayoutParams(0,48,1));q2.addView(homeButton("▤ التقارير",()->showReports(),0xffe7f7ef),new LinearLayout.LayoutParams(0,48,1));quick.addView(q2);addCard(quick);
+        boolean auto=db.setting("auto_send").equals("1");LinearLayout status=row();status.setBackground(shape(auto?0xffffeeee:0xffe8f7ef,16,0));status.setPadding(12,8,12,8);status.addView(label("الإرسال الآلي",14,navy,true),new LinearLayout.LayoutParams(0,-2,1));status.addView(label(auto?"مفعّل":"متوقف",15,auto?red:green,true));status.setOnClickListener(v->showSettings());addCard(status);
     }
     void showCustomers(){base("العملاء");EditText search=new EditText(this);search.setHint("بحث باسم العميل أو رقم الهاتف");body.addView(search);EditText name=new EditText(this);name.setHint("اسم المحوّل كما يظهر في ون كاش");EditText phone=new EditText(this);phone.setHint("رقم الجوال المستلم");phone.setInputType(3);body.addView(name);body.addView(phone);body.addView(btn("حفظ عميل جديد",()->{if(db.addCustomer(name.getText().toString(),phone.getText().toString())){toast("تم حفظ العميل");showCustomers();}else toast("تعذر الحفظ: الاسم مكرر أو البيانات ناقصة");}));
         TextView note=txt("إدارة الربط: اضغط على العميل للتعديل، واضغط مطولًا للحذف.",13,0xff64788b);body.addView(note);
