@@ -27,8 +27,9 @@ public final class TransferParser {
     public static String normalizeName(String value) {
         if (value == null) return "";
         String s = Normalizer.normalize(value, Normalizer.Form.NFKC);
-        s = s.replaceAll("[\\u0640\\u064B-\\u065F\\u0670]", "");
-        s = s.replaceAll("[\\s\\p{Punct}]+", " ").trim();
+         s = s.replaceAll("[\\u0640\\u064B-\\u065F\\u0670]", "");
+        s = s.replace('أ','ا').replace('إ','ا').replace('آ','ا').replace('ى','ي');
+        s = s.replaceAll("[،؛؟!:.\\-_/\\s\\p{Punct}]+", " ").trim();
         return s;
     }
 
