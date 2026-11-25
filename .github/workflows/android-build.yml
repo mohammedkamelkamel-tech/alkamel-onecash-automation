@@ -1,4 +1,7 @@
 name: Android build
+concurrency:
+  group: android-build-${{ github.ref }}
+  cancel-in-progress: true
 on:
   workflow_dispatch:
   push:
