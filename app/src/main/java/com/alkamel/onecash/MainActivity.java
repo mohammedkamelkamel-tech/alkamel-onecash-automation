@@ -23,7 +23,7 @@ public class MainActivity extends Activity {
     LinearLayout col(){LinearLayout l=new LinearLayout(this);l.setOrientation(1);return l;}
     View card(){LinearLayout l=col();l.setBackgroundColor(white);l.setPadding(8,8,8,8);return l;}
     void addCard(View v){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.setMargins(0,0,0,12);body.addView(v,p);} void addListCard(LinearLayout list,View v){LinearLayout.LayoutParams p=new LinearLayout.LayoutParams(-1,-2);p.setMargins(0,0,0,12);list.addView(v,p);}
-    void base(String screen){root=col();root.setBackgroundColor(bg);root.setPadding(12,8,12,8);
+    void base(String screen){root=col();root.setLayoutDirection(View.LAYOUT_DIRECTION_RTL);root.setBackgroundColor(bg);root.setPadding(12,8,12,8);
         LinearLayout header=col();header.setBackgroundColor(navy);header.setPadding(14,14,14,14);
         TextView brand=txt("الكامل",25,white);brand.setTypeface(null,Typeface.BOLD);header.addView(brand);
         header.addView(txt("أتمتة ون كاش  •  "+screen,14,0xffc9e7ff));root.addView(header);
