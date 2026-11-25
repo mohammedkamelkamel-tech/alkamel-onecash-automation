@@ -38,8 +38,8 @@ public final class TransferParser {
     private static String digitsToEnglish(String s) {
         StringBuilder out = new StringBuilder();
         for (char c : s.toCharArray()) {
-            if (c >= '٠' && c <= '٩') out.append((char)('0' + c - '٠');
-            else if (c >= '۰' && c <= '۹') out.append((char)('0' + c - '۰');
+            if (c >= '٠' && c <= '٩') out.append((char) ('0' + c - '٠'));
+            else if (c >= '۰' && c <= '۹') out.append((char) ('0' + c - '۰'));
             else out.append(c);
         }
         return out.toString();
