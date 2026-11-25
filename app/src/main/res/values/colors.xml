@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="alkamel_navy">#17212B</color>
+    <color name="alkamel_navy">#102B46</color>
     <color name="alkamel_blue">#FF8A00</color>
     <color name="alkamel_cyan">#FFB347</color>
-    <color name="alkamel_background">#101820</color>
-    <color name="alkamel_green">#20B26B</color>
+    <color name="alkamel_background">#F7F8FA</color>
+    <color name="alkamel_green">#1B9A68</color>
 </resources>
