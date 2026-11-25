@@ -18,7 +18,7 @@ public class IncomingSmsReceiver extends BroadcastReceiver {
         if(expected.trim().isEmpty()||sender==null||!sender.equals(expected.trim()))return;
         TransferParser.Parsed p=TransferParser.parse(body.toString());if(p==null)return;
         String fp=hash(sender+"|"+body+"|"+timestamp);
-        if(db.transferExists(fp))return;
+        if(db.transferExists(fp))return;\n        // Suppress near-identical duplicate SMS deliveries without relying only on timestamp fingerprints.\n        if(db.hasRecentSimilarTransfer(sender,p.payerName,p.amount,90_000L))return;
         String phone=db.customerPhone(p.payerName);
         if(phone==null){safeTransfer(db,fp,sender,p.payerName,p.amount,null,-1,"REVIEW","اسم المحوّل غير مسجل");return;}
         if(!db.setting("auto_send").equals("1")){safeTransfer(db,fp,sender,p.payerName,p.amount,phone,-1,"WAITING","الإرسال الآلي متوقف — راجع الحوالة");return;}
