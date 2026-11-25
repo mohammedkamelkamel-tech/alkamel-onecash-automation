@@ -1,6 +1,7 @@
 package com.alkamel.onecash;
 
 import android.content.*;
+import android.app.PendingIntent;
 import android.provider.Telephony;
 import android.telephony.SmsMessage;
 import java.security.MessageDigest;
